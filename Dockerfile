@@ -3,7 +3,8 @@ MAINTAINER David Zemon <david.zemon@redlion.net>
 
 ENV DEBIAN_FRONTEND=noninteractive \
     REPREPRO_ROOT_DIR=/data \
-    GNUPGHOME="/data/.gnupg"
+    GNUPGHOME="/data/.gnupg" \
+    REPREPRO_USERNAME=reprepro
 
 RUN apt-get update && apt-get install --yes --no-install-recommends \
     reprepro \

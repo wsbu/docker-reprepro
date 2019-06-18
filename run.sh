@@ -6,7 +6,9 @@ set -e
 if [[ -z "${REPREPRO_UID}" ]] ; then
   REPREPRO_UID=1000
 fi
-if ! grep "${USER_NAME}" /etc/passwd >/dev/null 2>&1 ; then
+if ! grep "${REPREPRO_USERNAME}" /etc/passwd >/dev/null 2>&1 ; then
+  echo "=> User '${REPREPRO_USERNAME}' use does not exist."
+  echo "   Creating user '${REPREPRO_USERNAME}' with uid=${REPREPRO_UID}"
   adduser \
       --system \
       --group \
@@ -14,7 +16,9 @@ if ! grep "${USER_NAME}" /etc/passwd >/dev/null 2>&1 ; then
       --uid "${REPREPRO_UID}" \
       --disabled-password \
       --no-create-home \
-      reprepro
+      "${REPREPRO_USERNAME}"
+else
+  echo "=> User '${REPREPRO_USERNAME}' already exists. Skipping new user creation."
 fi
 
 # Ensure the GPG configuration directory exists
@@ -49,17 +53,17 @@ EOF
   fi
 
   # Make sure there are no root-owned files in there
-  chown -R reprepro:reprepro "${base_path}"
+  chown -R "${REPREPRO_USERNAME}:${REPREPRO_USERNAME}" "${base_path}"
 done
 
 # Ensure reprepro can SSH in via key authentication
 if [[ -z "${REPREPRO_SSH_KEY_FILE_PATH}" ]] ; then
-  echo "=> ERROR: No SSH public key given for reprepro user."
-  echo "   Please provide a public key to SSH in as the reprepro user by"
+  echo "=> ERROR: No SSH public key given for ${REPREPRO_USERNAME} user."
+  echo "   Please provide a public key to SSH in as the ${REPREPRO_USERNAME} user by"
   echo "   specifying the REPREPRO_SSH_KEY_FILE_PATH environment variable."
   exit 1
-elif ! grep 'Match User reprepro' /etc/ssh/sshd_config ; then
-  echo "Match User reprepro" >> /etc/ssh/sshd_config
+elif ! grep "Match User ${REPREPRO_USERNAME}" /etc/ssh/sshd_config ; then
+  echo "Match User ${REPREPRO_USERNAME}" >> /etc/ssh/sshd_config
   echo "    AuthorizedKeysFile ${REPREPRO_SSH_KEY_FILE_PATH}"
 fi
 
