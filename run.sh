@@ -23,9 +23,9 @@ fi
 
 # Ensure the GPG configuration directory exists
 if [[ ! -d "${GNUPGHOME}" ]]; then
-  echo "=> /data/.gnupg directory does not exist:"
-  echo "   Please include this directry in the Docker volume"
-  echo "   with an appropriately configured GPG key."
+  echo "=> GnuPG home directory (GNUPGHOME=${GNUPGHOME}) does not exist:"
+  echo "   Please include this directry in the Docker volume with an"
+  echo "   appropriately configured GPG key."
   exit 1
 fi
 
