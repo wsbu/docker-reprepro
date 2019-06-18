@@ -39,7 +39,7 @@ for base_path in /data/*; do
   echo "=> Configuring repo ${base_path}..."
 
   # Ensure some extra directories exist
-  mkdir -p "${base_path}/{tmp,incoming,conf}"
+  mkdir -p "${base_path}"/{tmp,incoming,conf}
 
   # Create the options file
   options_file="${base_path}/conf/options"
