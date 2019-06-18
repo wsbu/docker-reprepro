@@ -27,6 +27,11 @@ fi
 
 # Ensure each distribution is configured
 for base_path in /data/*; do
+  # Skip any non-directory entries - we only care about directories
+  if [[ ! -d "${base_path}" ]] ; then
+    continue
+  fi
+
   echo "=> Configuring repo ${base_path}..."
 
   # Ensure some extra directories exist
