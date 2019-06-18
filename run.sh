@@ -64,7 +64,7 @@ if [[ -z "${REPREPRO_SSH_KEY_FILE_PATH}" ]] ; then
   exit 1
 elif ! grep "Match User ${REPREPRO_USERNAME}" /etc/ssh/sshd_config > /dev/null ; then
   echo "Match User ${REPREPRO_USERNAME}" >> /etc/ssh/sshd_config
-  echo "    AuthorizedKeysFile ${REPREPRO_SSH_KEY_FILE_PATH}"
+  echo "    AuthorizedKeysFile ${REPREPRO_SSH_KEY_FILE_PATH}" >> /etc/ssh/sshd_config
 fi
 
 echo "=> Starting SSH server..."
