@@ -62,10 +62,11 @@ if [[ -z "${REPREPRO_SSH_KEY_FILE_PATH}" ]] ; then
   echo "   Please provide a public key to SSH in as the ${REPREPRO_USERNAME} user by"
   echo "   specifying the REPREPRO_SSH_KEY_FILE_PATH environment variable."
   exit 1
-elif ! grep "Match User ${REPREPRO_USERNAME}" /etc/ssh/sshd_config ; then
+elif ! grep "Match User ${REPREPRO_USERNAME}" /etc/ssh/sshd_config > /dev/null ; then
   echo "Match User ${REPREPRO_USERNAME}" >> /etc/ssh/sshd_config
   echo "    AuthorizedKeysFile ${REPREPRO_SSH_KEY_FILE_PATH}"
 fi
 
 echo "=> Starting SSH server..."
+mkdir -p /run/sshd
 exec /usr/sbin/sshd -D -e
